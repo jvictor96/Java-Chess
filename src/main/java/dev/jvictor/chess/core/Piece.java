@@ -7,6 +7,7 @@ public abstract class Piece {
     abstract List<Position> getMiddlePlaces();
     abstract List<Position> getAllPossibleDestinations();
     abstract boolean isValidRoque();
+    abstract String getSymbol();
 
     public class Pawn extends Piece {
         public boolean isMovementValid() {
@@ -19,6 +20,9 @@ public abstract class Piece {
             throw new UnsupportedOperationException("Not implemented yet");
         }
         public boolean isValidRoque() {
+            throw new UnsupportedOperationException("Not implemented yet");
+        }
+        public String getSymbol(){
             throw new UnsupportedOperationException("Not implemented yet");
         }
     }
@@ -36,6 +40,9 @@ public abstract class Piece {
         public boolean isValidRoque() {
             throw new UnsupportedOperationException("Not implemented yet");
         }
+        public String getSymbol(){
+            throw new UnsupportedOperationException("Not implemented yet");
+        }
     }
 
     public class Knight extends Piece {
@@ -49,6 +56,9 @@ public abstract class Piece {
             throw new UnsupportedOperationException("Not implemented yet");
         }
         public boolean isValidRoque() {
+            throw new UnsupportedOperationException("Not implemented yet");
+        }
+        public String getSymbol(){
             throw new UnsupportedOperationException("Not implemented yet");
         }
     }
@@ -66,6 +76,9 @@ public abstract class Piece {
         public boolean isValidRoque() {
             throw new UnsupportedOperationException("Not implemented yet");
         }
+        public String getSymbol(){
+            throw new UnsupportedOperationException("Not implemented yet");
+        }
     }
 
     public class King extends Piece {
@@ -81,6 +94,9 @@ public abstract class Piece {
         public boolean isValidRoque() {
             throw new UnsupportedOperationException("Not implemented yet");
         }
+        public String getSymbol(){
+            throw new UnsupportedOperationException("Not implemented yet");
+        }
     }
 
     public class Queen extends Piece {
@@ -94,6 +110,9 @@ public abstract class Piece {
             throw new UnsupportedOperationException("Not implemented yet");
         }
         public boolean isValidRoque() {
+            throw new UnsupportedOperationException("Not implemented yet");
+        }
+        public String getSymbol(){
             throw new UnsupportedOperationException("Not implemented yet");
         }
     }
