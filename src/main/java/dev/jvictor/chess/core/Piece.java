@@ -1,119 +1,44 @@
 package dev.jvictor.chess.core;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+
+import dev.jvictor.chess.core.pieces.Bishop;
+import dev.jvictor.chess.core.pieces.King;
+import dev.jvictor.chess.core.pieces.Knight;
+import dev.jvictor.chess.core.pieces.Pawn;
+import dev.jvictor.chess.core.pieces.Queen;
+import dev.jvictor.chess.core.pieces.Rook;
 
 public abstract class Piece {
-    abstract boolean isMovementValid();
-    abstract List<Position> getMiddlePlaces();
-    abstract List<Position> getAllPossibleDestinations();
-    abstract boolean isValidRoque();
-    abstract String getSymbol();
+    public Position position;
+    public Color color;
 
-    public class Pawn extends Piece {
-        public boolean isMovementValid() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public List<Position> getMiddlePlaces() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public List<Position> getAllPossibleDestinations() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public boolean isValidRoque() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public String getSymbol(){
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
+    public abstract boolean isMovementValid();
+    public abstract List<Position> getMiddlePlaces();
+    public abstract List<Position> getAllPossibleDestinations();
+    public abstract boolean isValidRoque();
+    public abstract String getSymbol();
+    public Position getPosition() {
+        return position;
     }
 
-    public class Rook extends Piece {
-        public boolean isMovementValid() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public List<Position> getMiddlePlaces() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public List<Position> getAllPossibleDestinations() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public boolean isValidRoque() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public String getSymbol(){
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
+    public static Piece fromType(String type, Color color, Position position) {
+        Map<String, Function<Position, Piece>> typeToPiece = new HashMap<String, Function<Position, Piece>>();
+        typeToPiece.put("P", x -> new Pawn(x));
+        typeToPiece.put("R", x -> new Rook(x));
+        typeToPiece.put("N", x -> new Knight(x));
+        typeToPiece.put("B", x -> new Bishop(x));
+        typeToPiece.put("Q", x -> new Queen(x));
+        typeToPiece.put("K", x -> new King(x));
+        Piece piece = typeToPiece.get(type).apply(position);
+        piece.color = color;
+        return piece;
     }
 
-    public class Knight extends Piece {
-        public boolean isMovementValid() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public List<Position> getMiddlePlaces() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public List<Position> getAllPossibleDestinations() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public boolean isValidRoque() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public String getSymbol(){
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-    }
-
-    public class Bishop extends Piece {
-        public boolean isMovementValid() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public List<Position> getMiddlePlaces() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public List<Position> getAllPossibleDestinations() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public boolean isValidRoque() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public String getSymbol(){
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-    }
-
-    public class King extends Piece {
-        public boolean isMovementValid() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public List<Position> getMiddlePlaces() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public List<Position> getAllPossibleDestinations() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public boolean isValidRoque() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public String getSymbol(){
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-    }
-
-    public class Queen extends Piece {
-        public boolean isMovementValid() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public List<Position> getMiddlePlaces() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public List<Position> getAllPossibleDestinations() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public boolean isValidRoque() {
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
-        public String getSymbol(){
-            throw new UnsupportedOperationException("Not implemented yet");
-        }
+    public enum Color {
+        WHITE, BLACK
     }
 }
