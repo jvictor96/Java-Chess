@@ -2,7 +2,6 @@ package dev.jvictor.chess.core;
 
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 

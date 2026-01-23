@@ -13,4 +13,8 @@ public class Position {
         int y = Integer.parseInt(position.substring(1), 10); 
         return new Position(x, y);
     }
+
+    public boolean isValid() {
+        return x >= 1 && x <= 8 && y>=1 && y<=8; 
+    }
 }

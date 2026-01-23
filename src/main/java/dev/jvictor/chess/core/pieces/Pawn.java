@@ -10,16 +10,16 @@ public class Pawn extends Piece {
         this.position = position;
     }
 
-    public boolean isMovementValid() {
+    public boolean isMovementValid(Position destination) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
-    public List<Position> getMiddlePlaces() {
+    public List<Position> getMiddlePlaces(Position destination) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
     public List<Position> getAllPossibleDestinations() {
         throw new UnsupportedOperationException("Not implemented yet");
     }
-    public boolean isValidRoque() {
+    public boolean isValidRoque(Position destination) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
     public String getSymbol(){

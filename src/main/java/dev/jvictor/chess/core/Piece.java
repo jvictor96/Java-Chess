@@ -13,17 +13,19 @@ import dev.jvictor.chess.core.pieces.Queen;
 import dev.jvictor.chess.core.pieces.Rook;
 
 public abstract class Piece {
+
+    public enum Color {
+        WHITE, BLACK
+    }
+
     public Position position;
     public Color color;
 
-    public abstract boolean isMovementValid();
-    public abstract List<Position> getMiddlePlaces();
+    public abstract boolean isMovementValid(Position destination);
+    public abstract List<Position> getMiddlePlaces(Position destination);
     public abstract List<Position> getAllPossibleDestinations();
-    public abstract boolean isValidRoque();
+    public abstract boolean isValidRoque(Position destination);
     public abstract String getSymbol();
-    public Position getPosition() {
-        return position;
-    }
 
     public static Piece fromType(String type, Color color, Position position) {
         Map<String, Function<Position, Piece>> typeToPiece = new HashMap<String, Function<Position, Piece>>();
@@ -37,8 +39,8 @@ public abstract class Piece {
         piece.color = color;
         return piece;
     }
-
-    public enum Color {
-        WHITE, BLACK
+    
+    public Position getPosition() {
+        return position;
     }
 }
