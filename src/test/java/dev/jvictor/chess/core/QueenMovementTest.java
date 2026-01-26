@@ -52,11 +52,11 @@ public class QueenMovementTest {
 
     @Test
     public void invalidQueenJumpOverAllyTest() {
-        board.move("e4h4");
-        org.junit.jupiter.api.Assertions.assertFalse(board.legal);
+        board.move("e4e1");
+        org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("e2").getSymbol(), "P");
         org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("e4").getSymbol(), "Q");
-        org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("f4").getSymbol(), "P");
         org.junit.jupiter.api.Assertions.assertNull(board.getPieceAt("h4"));
+        org.junit.jupiter.api.Assertions.assertFalse(board.legal);
     }
 
     @Test
@@ -73,15 +73,15 @@ public class QueenMovementTest {
         org.junit.jupiter.api.Assertions.assertFalse(board.legal);
         org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("d7").getSymbol(), "P");
         org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("e8").getSymbol(), "K");
-        org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("d4").getSymbol(), "Q");
+        org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("e4").getSymbol(), "Q");
     }
 
     @Test
     public void invalidQueenTakesTest() {
-        board.move("d4e7");
+        board.move("e4d7");
         org.junit.jupiter.api.Assertions.assertFalse(board.legal);
-        org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("d4").getSymbol(), "Q");
-        org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("e7").getSymbol(), "P");
+        org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("e4").getSymbol(), "Q");
+        org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("d7").getSymbol(), "P");
         org.junit.jupiter.api.Assertions.assertNull(board.getPieceAt("e5"));
         org.junit.jupiter.api.Assertions.assertNull(board.getPieceAt("e6"));
         org.junit.jupiter.api.Assertions.assertNull(board.getPieceAt("d5"));

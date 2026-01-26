@@ -34,4 +34,8 @@ public class Position {
     public boolean equals(Object other) {
         return other.hashCode() == this.hashCode();
     }
+
+    public Position add(int i, int j) {
+        return new Position(x + i, x + j);
+    }
 }

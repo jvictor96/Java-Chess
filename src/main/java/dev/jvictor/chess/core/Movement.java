@@ -36,7 +36,7 @@ public class Movement {
     }
 
     private boolean isPieceWiseValid() {
-        return piece.isMovementValid(to);
+        return piece.isMovementValid(to, positions.get(to));
     }
 
     private boolean isPathClear() {

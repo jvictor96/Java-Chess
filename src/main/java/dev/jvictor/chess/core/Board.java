@@ -13,12 +13,14 @@ import java.util.List;
 public class Board {
     
     List<Piece> pieces;
+    List<String> movements;
     Map<Position, Piece> positions;
     String white, black, winner;
     public boolean legal;
 
     Board() {
         pieces = new ArrayList<>();
+        movements = new ArrayList<>();
         IntStream.range(1,9).forEach(i -> pieces.add(Piece.fromType("P", Color.WHITE, new Position(i, 2))));
         IntStream.range(1,9).forEach(i -> pieces.add(Piece.fromType("P", Color.BLACK, new Position(i, 7))));
         pieces.add(Piece.fromType("R", Color.WHITE, new Position(1, 1)));
@@ -56,7 +58,14 @@ public class Board {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    public void updatePositions(String movement) {
+    private void updatePositions(String movement) {
+        noHistoryChangeUpdatePositions(movement);
+        movements.add(movement);
+        Movement parsedMovement = Movement.fromString(movement, positions);
+        positions.get(parsedMovement.to).isMoved = true;
+    }
+
+    private void noHistoryChangeUpdatePositions(String movement) {
         Movement parsedMovement = Movement.fromString(movement, positions);
         parsedMovement.piece.position = parsedMovement.to;
         positions.put(parsedMovement.to, positions.get(parsedMovement.from));

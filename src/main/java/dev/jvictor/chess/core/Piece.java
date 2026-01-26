@@ -20,8 +20,9 @@ public abstract class Piece {
 
     public Position position;
     public Color color;
+    public boolean isMoved = false;
 
-    public abstract boolean isMovementValid(Position destination);
+    public abstract boolean isMovementValid(Position destination, Piece pieceThere);
     public abstract List<Position> getMiddlePlaces(Position destination);
     public abstract List<Position> getAllPossibleDestinations();
     public abstract boolean isValidRoque(Position destination);

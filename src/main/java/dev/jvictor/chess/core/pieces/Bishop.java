@@ -13,7 +13,7 @@ public class Bishop extends Piece {
             this.position = position;
         }
         
-        public boolean isMovementValid(Position destination) {
+        public boolean isMovementValid(Position destination, Piece pieceThere) {
             return Math.abs(destination.x-position.x) == Math.abs(destination.y-position.y);
         }
 
@@ -33,7 +33,7 @@ public class Bishop extends Piece {
         }
 
         public List<Position> getMiddlePlaces(Position destination) {
-            if (!isMovementValid(destination)) return new ArrayList<Position>();
+            if (!isMovementValid(destination, null)) return new ArrayList<Position>();
             return bishopMiddlePlaces(position, destination);
         }
 

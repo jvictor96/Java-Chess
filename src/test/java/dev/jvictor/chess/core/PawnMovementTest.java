@@ -10,6 +10,7 @@ public class PawnMovementTest {
     @BeforeEach
     public void resetBoard() {
         board = new Board();
+        board.moveWithoutValidation("b8b3");
     }
 
     @Test

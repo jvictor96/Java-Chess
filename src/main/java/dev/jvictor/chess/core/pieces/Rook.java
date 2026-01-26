@@ -12,7 +12,7 @@ public class Rook extends Piece {
         public Rook(Position position) {
             this.position = position;
         }
-        public boolean isMovementValid(Position destination) {
+        public boolean isMovementValid(Position destination, Piece pieceThere) {
             return destination.x == position.x || destination.y == position.y;
         }
 
@@ -28,7 +28,7 @@ public class Rook extends Piece {
         }
 
         public List<Position> getMiddlePlaces(Position destination) {
-            if (!isMovementValid(destination)) return new ArrayList<Position>();
+            if (!isMovementValid(destination, null)) return new ArrayList<Position>();
             return rookMiddlePaces(position, destination);
         }
 

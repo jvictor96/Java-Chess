@@ -10,6 +10,9 @@ public class KingMovementTest {
     @BeforeEach
     public void resetBoard() {
         board = new Board();
+        board.moveWithoutValidation("e1e4");
+        board.moveWithoutValidation("a2f3");
+        board.moveWithoutValidation("b7f5");
     }
 
     @Test
@@ -68,7 +71,7 @@ public class KingMovementTest {
     public void invalidKingTakesTest() {
         board.move("e4e7");
         org.junit.jupiter.api.Assertions.assertFalse(board.legal);
-        org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("d4").getSymbol(), "K");
+        org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("e4").getSymbol(), "K");
         org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("e7").getSymbol(), "P");
         org.junit.jupiter.api.Assertions.assertNull(board.getPieceAt("e5"));
         org.junit.jupiter.api.Assertions.assertNull(board.getPieceAt("e6"));
