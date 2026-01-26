@@ -10,6 +10,7 @@ public class QueenMovementTest {
     @BeforeEach
     public void resetBoard() {
         board = new Board();
+        board.moveWithoutValidation("d1e4");
     }
 
     @Test

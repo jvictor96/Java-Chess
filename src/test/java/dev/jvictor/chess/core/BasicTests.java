@@ -15,7 +15,8 @@ public class BasicTests {
 
     @Test
     public void positionsTest() {
-        Assertions.assertEquals(board.positions.size(), 32); 
+        Assertions.assertEquals(board.positions.size(), 32);
+        Assertions.assertEquals(board.getPieceAt("a1").getSymbol(), "R");
     }
 
     @Test

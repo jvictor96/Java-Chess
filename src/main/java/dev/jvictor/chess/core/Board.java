@@ -30,13 +30,13 @@ public class Board {
         pieces.add(Piece.fromType("N", Color.WHITE, new Position(7, 1)));
         pieces.add(Piece.fromType("R", Color.WHITE, new Position(8, 1)));
         pieces.add(Piece.fromType("R", Color.BLACK, new Position(1, 8)));
-        pieces.add(Piece.fromType("R", Color.BLACK, new Position(8, 8)));
         pieces.add(Piece.fromType("N", Color.BLACK, new Position(2, 8)));
-        pieces.add(Piece.fromType("N", Color.BLACK, new Position(7, 8)));
         pieces.add(Piece.fromType("B", Color.BLACK, new Position(3, 8)));
-        pieces.add(Piece.fromType("B", Color.BLACK, new Position(6, 8)));
         pieces.add(Piece.fromType("Q", Color.BLACK, new Position(4, 8)));
         pieces.add(Piece.fromType("K", Color.BLACK, new Position(5, 8)));
+        pieces.add(Piece.fromType("B", Color.BLACK, new Position(6, 8)));
+        pieces.add(Piece.fromType("N", Color.BLACK, new Position(7, 8)));
+        pieces.add(Piece.fromType("R", Color.BLACK, new Position(8, 8)));
         positions = pieces.stream().collect(Collectors.toMap(Piece::getPosition, Function.identity()));
     }
 
@@ -57,14 +57,15 @@ public class Board {
     }
 
     public void updatePositions(String movement) {
-        Movement parsedMovement = Movement.fromString(movement);
-        positions.get(parsedMovement.from).position = parsedMovement.to;
+        Movement parsedMovement = Movement.fromString(movement, positions);
+        parsedMovement.piece.position = parsedMovement.to;
         positions.put(parsedMovement.to, positions.get(parsedMovement.from));
         positions.remove(parsedMovement.from);
     }
 
     public Board moveWithoutValidation(String movement) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        updatePositions(movement);
+        return this;
     }
 
     public Board move(String movement) {

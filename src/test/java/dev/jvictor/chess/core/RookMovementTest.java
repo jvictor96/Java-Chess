@@ -10,6 +10,8 @@ public class RookMovementTest {
     @BeforeEach
     public void resetBoard() {
         board = new Board();
+        board.moveWithoutValidation("a1d4");
+        board.moveWithoutValidation("h1e4");
     }
 
     @Test

@@ -17,17 +17,18 @@ public class Rook extends Piece {
         }
 
         public static List<Position> rookMiddlePaces(Position origin, Position destination) {
+            if (destination.x != origin.x && destination.y != origin.y) return new ArrayList<Position>();
             return Map.of(
-                destination.x > origin.x, IntStream.range(origin.x + 1, destination.x).mapToObj(i -> new Position(i, origin.y)).toList(),
-                destination.x < origin.x, IntStream.range(destination.x + 1, origin.x).mapToObj(i -> new Position(i, origin.y)).toList(),
-                destination.x > origin.x, IntStream.range(origin.y + 1, destination.y).mapToObj(i -> new Position(origin.x, i)).toList(),
-                destination.x > origin.x, IntStream.range(destination.y + 1, origin.y).mapToObj(i -> new Position(origin.x, i)).toList(),
-                destination.x == origin.x && destination.y == origin.y, new ArrayList<Position>()
-            ).get(true);
+                destination.x > origin.x ? 0 : 1, IntStream.range(origin.x + 1, destination.x).mapToObj(i -> new Position(i, origin.y)).toList(),
+                destination.x < origin.x ? 0 : 2, IntStream.range(destination.x + 1, origin.x).mapToObj(i -> new Position(i, origin.y)).toList(),
+                destination.y > origin.y ? 0 : 3, IntStream.range(origin.y + 1, destination.y).mapToObj(i -> new Position(origin.x, i)).toList(),
+                destination.y < origin.y ? 0 : 4, IntStream.range(destination.y + 1, origin.y).mapToObj(i -> new Position(origin.x, i)).toList(),
+                destination.x == origin.x && destination.y == origin.y ? 0 : 5, new ArrayList<Position>()
+            ).get(0);
         }
 
         public List<Position> getMiddlePlaces(Position destination) {
-            if (!isMovementValid(destination)) return null;
+            if (!isMovementValid(destination)) return new ArrayList<Position>();
             return rookMiddlePaces(position, destination);
         }
 

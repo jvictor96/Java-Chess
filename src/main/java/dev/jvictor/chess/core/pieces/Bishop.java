@@ -18,21 +18,22 @@ public class Bishop extends Piece {
         }
 
         public static List<Position> bishopMiddlePlaces(Position origin, Position destination) {
+            if(!(Math.abs(destination.x-origin.x) == Math.abs(destination.y-origin.y))) return new ArrayList<Position>();
             return Map.of(
-                destination.x > origin.x && destination.y > origin.y, 
-                IntStream.range(destination.x, destination.x - origin.x).mapToObj(i -> new Position(origin.x + 1 + i, origin.y + 1 + i)).toList(),
-                destination.x > origin.x && destination.y < origin.y, 
-                IntStream.range(destination.x, destination.x - origin.x).mapToObj(i -> new Position(origin.x + 1 + i, origin.y - 1 - i)).toList(),
-                destination.x < origin.x && destination.y < origin.y, 
-                IntStream.range(origin.x, origin.x - destination.x).mapToObj(i -> new Position(destination.x + 1 + i, origin.y - 1 - i)).toList(),
-                destination.x < origin.x && destination.y > origin.y, 
-                IntStream.range(origin.x, origin.x - destination.x).mapToObj(i -> new Position(destination.x + 1 + i, origin.y + 1 + i)).toList(),
-                destination.x == origin.x && destination.y == origin.y, new ArrayList<Position>()
-            ).get(true);
+                destination.x > origin.x && destination.y > origin.y ? 0 : 1, 
+                IntStream.range(origin.x + 1, destination.x).mapToObj(i -> new Position(i, origin.y + i - origin.x)).toList(),
+                destination.x > origin.x && destination.y < origin.y ? 0 : 2, 
+                IntStream.range(origin.x + 1, destination.x).mapToObj(i -> new Position(i, origin.y - i + origin.x)).toList(),
+                destination.x < origin.x && destination.y < origin.y ? 0 : 3, 
+                IntStream.range(destination.x + 1, origin.x).mapToObj(i -> new Position(i, destination.y - i + origin.x)).toList(),
+                destination.x < origin.x && destination.y > origin.y ? 0 : 4, 
+                IntStream.range(destination.x + 1, origin.x).mapToObj(i -> new Position(i, destination.y + i - origin.x)).toList(),
+                destination.x == origin.x && destination.y == origin.y ? 0 : 5, new ArrayList<Position>()
+            ).get(0);
         }
 
         public List<Position> getMiddlePlaces(Position destination) {
-            if (!isMovementValid(destination)) return null;
+            if (!isMovementValid(destination)) return new ArrayList<Position>();
             return bishopMiddlePlaces(position, destination);
         }
 

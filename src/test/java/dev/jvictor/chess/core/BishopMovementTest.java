@@ -10,6 +10,10 @@ public class BishopMovementTest {
     @BeforeEach
     public void resetBoard() {
         board = new Board();
+        board = board.moveWithoutValidation("c1e4");
+        board = board.moveWithoutValidation("f1d4");
+        board = board.moveWithoutValidation("h1h2");
+        board = board.moveWithoutValidation("a8a7");
     }
 
     @Test

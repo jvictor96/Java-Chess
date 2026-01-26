@@ -10,6 +10,7 @@ public class KnightMovementTest {
     @BeforeEach
     public void resetBoard() {
         board = new Board();
+        board.moveWithoutValidation("b1c3");
     }
 
     @Test

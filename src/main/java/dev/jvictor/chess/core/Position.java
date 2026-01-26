@@ -1,5 +1,7 @@
 package dev.jvictor.chess.core;
 
+import java.util.Objects;
+
 public class Position {
     public int x, y;
 
@@ -10,11 +12,26 @@ public class Position {
 
     public static Position fromString(String position) {
         int x = position.charAt(0) - 96; 
-        int y = Integer.parseInt(position.substring(1), 10); 
+        int y = Integer.parseInt(position.substring(1,2)); 
         return new Position(x, y);
     }
 
     public boolean isValid() {
         return x >= 1 && x <= 8 && y>=1 && y<=8; 
+    }
+
+    @Override
+    public String toString() {
+        return "%d%d".formatted(x, y);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other.hashCode() == this.hashCode();
     }
 }
