@@ -10,47 +10,47 @@ public class KnightMovementTest {
     @BeforeEach
     public void resetBoard() {
         board = new Board();
-        board.moveWithoutValidation("b1c3");
+        board.moveWithoutValidation(board.buildMovement("b1c3"));
     }
 
     @Test
     public void validForwardRightKnightMoveTest() {
-        board.move("c3d5");
+        board.move(board.buildMovement("c3d5"));
         org.junit.jupiter.api.Assertions.assertTrue(board.legal);
         org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("d5").getSymbol(), "N");
     }
 
     @Test
     public void validRightForwardKnightMoveTest() {
-        board.move("c3e4");
+        board.move(board.buildMovement("c3e4"));
         org.junit.jupiter.api.Assertions.assertTrue(board.legal);
         org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("e4").getSymbol(), "N");
     }
 
     @Test
     public void validForwardLeftKnightMoveTest() {
-        board.move("c3b5");
+        board.move(board.buildMovement("c3b5"));
         org.junit.jupiter.api.Assertions.assertTrue(board.legal);
         org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("b5").getSymbol(), "N");
     }
 
     @Test
     public void validLeftForwardKnightMoveTest() {
-        board.move("c3a4");
+        board.move(board.buildMovement("c3a4"));
         org.junit.jupiter.api.Assertions.assertTrue(board.legal);
         org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("a4").getSymbol(), "N");
     }
 
     @Test
     public void validBackwardKnightMoveTest() {
-        board.move("c3b1");
+        board.move(board.buildMovement("c3b1"));
         org.junit.jupiter.api.Assertions.assertTrue(board.legal);
         org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("b1").getSymbol(), "N");
     }
 
     @Test
     public void invalidForwardKnightMoveTest() {
-        board.move("c3c5");
+        board.move(board.buildMovement("c3c5"));
         org.junit.jupiter.api.Assertions.assertFalse(board.legal);
         org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("c3").getSymbol(), "N");
         org.junit.jupiter.api.Assertions.assertNull(board.getPieceAt("c5"));
@@ -58,7 +58,7 @@ public class KnightMovementTest {
 
     @Test
     public void invalidRightKnightMoveTest() {
-        board.move("c3e3");
+        board.move(board.buildMovement("c3e3"));
         org.junit.jupiter.api.Assertions.assertFalse(board.legal);
         org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("c3").getSymbol(), "N");
         org.junit.jupiter.api.Assertions.assertNull(board.getPieceAt("e3"));
@@ -66,7 +66,7 @@ public class KnightMovementTest {
 
     @Test
     public void invalidKnightMoveToBlockedPlaceTest() {
-        board.move("c3e2");
+        board.move(board.buildMovement("c3e2"));
         org.junit.jupiter.api.Assertions.assertFalse(board.legal);
         org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("c3").getSymbol(), "N");
         org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("e2").getSymbol(), "P");
@@ -74,7 +74,7 @@ public class KnightMovementTest {
 
     @Test
     public void invalidKnightTakesTest() {
-        board.move("c3c7");
+        board.move(board.buildMovement("c3c7"));
         org.junit.jupiter.api.Assertions.assertFalse(board.legal);
         org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("c3").getSymbol(), "N");
         org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("c7").getSymbol(), "P");

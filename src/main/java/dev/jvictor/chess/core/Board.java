@@ -58,27 +58,32 @@ public class Board {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    private void updatePositions(String movement) {
+    private void updatePositions(Movement movement) {
         noHistoryChangeUpdatePositions(movement);
-        movements.add(movement);
-        Movement parsedMovement = Movement.fromString(movement, positions);
-        positions.get(parsedMovement.to).isMoved = true;
+        movements.add(movement.toString());
+        positions.get(movement.to).isMoved = true;
     }
 
-    private void noHistoryChangeUpdatePositions(String movement) {
-        Movement parsedMovement = Movement.fromString(movement, positions);
-        parsedMovement.piece.position = parsedMovement.to;
-        positions.put(parsedMovement.to, positions.get(parsedMovement.from));
-        positions.remove(parsedMovement.from);
+    private void noHistoryChangeUpdatePositions(Movement movement) {
+        movement.piece.position = movement.to;
+        positions.put(movement.to, positions.get(movement.from));
+        positions.remove(movement.from);
     }
 
-    public Board moveWithoutValidation(String movement) {
-        updatePositions(movement);
+    public Board moveWithoutValidation(Movement movement) {
+        noHistoryChangeUpdatePositions(movement);
         return this;
     }
 
-    public Board move(String movement) {
-        legal = Movement.fromString(movement, positions).isMovementValid();
+    public Movement buildMovement(String movement){
+        return Movement.fromString(movement, positions);
+    }
+
+    public Board move(Movement movement) {
+        legal = movement.isMovementValid();
+        boolean rightTurn = movements.size() % 2 == 0 && movement.piece.color == Color.WHITE;
+        rightTurn = rightTurn || movements.size() % 2 == 1 && movement.piece.color == Color.BLACK;
+        legal = legal && rightTurn;
         if (legal) updatePositions(movement);
         return this;
 
