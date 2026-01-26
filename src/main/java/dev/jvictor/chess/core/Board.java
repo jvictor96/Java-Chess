@@ -81,12 +81,12 @@ public class Board {
 
     public Board move(Movement movement) {
         legal = movement.isMovementValid();
+        if (!legal) return this;
         boolean rightTurn = movements.size() % 2 == 0 && movement.piece.color == Color.WHITE;
         rightTurn = rightTurn || movements.size() % 2 == 1 && movement.piece.color == Color.BLACK;
         legal = legal && rightTurn;
         if (legal) updatePositions(movement);
         return this;
-
     }
 
 }

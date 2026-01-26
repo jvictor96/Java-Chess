@@ -57,4 +57,10 @@ public class GeneralMovementTest {
         board.move(board.buildMovement("a2a3"));
         org.junit.jupiter.api.Assertions.assertTrue(board.legal);
     }
+
+    @Test
+    public void moveNullTest() {
+        board.move(board.buildMovement("a3a4"));
+        org.junit.jupiter.api.Assertions.assertFalse(board.legal);
+    }
 }

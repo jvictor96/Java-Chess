@@ -16,15 +16,15 @@ public class Pawn extends Piece {
     public boolean isMovementValid(Position destination, Piece pieceThere) {
         return Map.of(Color.BLACK,
             Stream.of(
-                !isMoved && destination.y == position.y - 2,
-                destination.y == position.y - 1,
+                !isMoved && destination.y == position.y - 2 && pieceThere == null,
+                destination.y == position.y - 1 && pieceThere == null,
                 destination.y == position.y - 1 && Math.abs(destination.x - position.x) == 1 && 
                 pieceThere != null && pieceThere.color != color
             ).anyMatch(Boolean::booleanValue),
             Color.WHITE,
             Stream.of(
-                !isMoved && destination.y == position.y + 2, 
-                destination.y == position.y + 1,
+                !isMoved && destination.y == position.y + 2 && pieceThere == null, 
+                destination.y == position.y + 1 && pieceThere == null,
                 destination.y == position.y + 1 && Math.abs(destination.x - position.x) == 1 && 
                 pieceThere != null && pieceThere.color != color
             ).anyMatch(Boolean::booleanValue)

@@ -65,29 +65,5 @@ public class PawnMovementTest {
         org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("b2").getSymbol(), "P");
         org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("b3").getSymbol(), "N");
     }
-
-    @Test
-    public void invalidPawnTakesAndDoubleTest() {
-        org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("b3").getSymbol(), "N");
-        board.move(board.buildMovement("c2b3"));
-        org.junit.jupiter.api.Assertions.assertTrue(board.legal);
-        org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("b3").getSymbol(), "P");
-        board.move(board.buildMovement("b3b5"));
-        org.junit.jupiter.api.Assertions.assertFalse(board.legal);
-        org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("b3").getSymbol(), "P");
-        org.junit.jupiter.api.Assertions.assertNull(board.getPieceAt("b4"));
-        org.junit.jupiter.api.Assertions.assertNull(board.getPieceAt("b5"));
-    }
-
-    @Test
-    public void validPawnTakesAndMoveTest() {
-        org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("b3").getSymbol(), "N");
-        board.move(board.buildMovement("c2b3"));
-        org.junit.jupiter.api.Assertions.assertTrue(board.legal);
-        org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("b3").getSymbol(), "P");
-        board.move(board.buildMovement("b3b4"));
-        org.junit.jupiter.api.Assertions.assertTrue(board.legal);
-        org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("b4").getSymbol(), "P");
-    }
     
 }

@@ -33,7 +33,9 @@ public class Queen extends Piece {
         ).get(true);
     }
     public List<Position> getAllPossibleDestinations() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        List<Position> asBishop = Bishop.getPossibleDestinationAsBishop(position);
+        asBishop.addAll(Rook.rookPossibleDestinations(position));
+        return asBishop;
     }
     public boolean isValidRoque(Position destination) {
         return false;

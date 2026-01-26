@@ -37,8 +37,18 @@ public class Bishop extends Piece {
             return bishopMiddlePlaces(position, destination);
         }
 
+        public static List<Position> getPossibleDestinationAsBishop(Position position) {
+            int upperY = position.y + position.x - 1;
+            int lowerY = position.y - position.x + 1;
+            List<Position> rising = IntStream.range(1, 9).mapToObj(x -> new Position(x, lowerY + x)).toList();
+            rising.addAll(
+                IntStream.range(1, 9).mapToObj(x -> new Position(x, upperY - x)).toList()
+            );
+            return rising.stream().filter(Position::isValid).toList();
+        }
+
         public List<Position> getAllPossibleDestinations() {
-            throw new UnsupportedOperationException("Not implemented yet");
+            return getPossibleDestinationAsBishop(position);
         }
 
         public boolean isValidRoque(Position destination) {
