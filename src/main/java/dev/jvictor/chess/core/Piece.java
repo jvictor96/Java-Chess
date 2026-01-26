@@ -25,7 +25,7 @@ public abstract class Piece {
     public abstract boolean isMovementValid(Position destination, Piece pieceThere);
     public abstract List<Position> getMiddlePlaces(Position destination);
     public abstract List<Position> getAllPossibleDestinations();
-    public abstract boolean isValidRoque(Position destination);
+    public abstract boolean isValidRoque(Position destination, Map<Position, Piece> pieces);
     public abstract String getSymbol();
 
     public static Piece fromType(String type, Color color, Position position) {

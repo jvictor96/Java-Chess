@@ -39,7 +39,7 @@ public class Queen extends Piece {
         asBishop.addAll(Rook.rookPossibleDestinations(position));
         return asBishop;
     }
-    public boolean isValidRoque(Position destination) {
+    public boolean isValidRoque(Position destination, Map<Position, Piece> pieces) {
         return false;
     }
     public String getSymbol(){

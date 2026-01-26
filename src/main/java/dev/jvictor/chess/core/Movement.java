@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 
 public class Movement {
     public Position from, to;
+    public Movement rookRoque;
     Map<Position, Piece> positions;
     Piece piece;
 
@@ -26,6 +27,13 @@ public class Movement {
 
     public boolean isMovementValid() {
         if (piece == null) return false;
+        if (piece.getSymbol().equals("K") && piece.isValidRoque(to, positions)) {
+            rookRoque = Map.of(
+                from.add(2, 0), new Movement(from.add(3, 0), from.add(1, 0), positions),
+                from.add(-2, 0), new Movement(from.add(-4, 0), from.add(-1, 0), positions)
+            ).get(to);
+            return true;
+        }
         return Stream.of(
             isPieceWiseValid(),
             isPathClear(),

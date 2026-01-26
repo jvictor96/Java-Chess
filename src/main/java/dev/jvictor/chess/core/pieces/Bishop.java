@@ -54,7 +54,7 @@ public class Bishop extends Piece {
             return getPossibleDestinationAsBishop(position);
         }
 
-        public boolean isValidRoque(Position destination) {
+        public boolean isValidRoque(Position destination, Map<Position, Piece> pieces) {
             return false;
         }
 

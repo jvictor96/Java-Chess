@@ -11,6 +11,7 @@ import dev.jvictor.chess.core.Position;
 public class Rook extends Piece {
         public Rook(Position position) {
             this.position = position;
+            isMoved = false;
         }
         public boolean isMovementValid(Position destination, Piece pieceThere) {
             return destination.x == position.x || destination.y == position.y;
@@ -42,7 +43,7 @@ public class Rook extends Piece {
         public List<Position> getAllPossibleDestinations() {
             return rookPossibleDestinations(position);
         }
-        public boolean isValidRoque(Position destination) {
+        public boolean isValidRoque(Position destination, Map<Position, Piece> pieces) {
             return false;
         }
         public String getSymbol(){

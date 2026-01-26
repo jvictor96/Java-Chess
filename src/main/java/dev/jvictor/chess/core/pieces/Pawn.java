@@ -48,7 +48,7 @@ public class Pawn extends Piece {
             List.of(position.add(0, -1), position.add(0, -2), position.add(1, -1), position.add(-1, -1))
         ).get(color);
     }
-    public boolean isValidRoque(Position destination) {
+    public boolean isValidRoque(Position destination, Map<Position, Piece> pieces) {
         return false;
     }
     public String getSymbol(){

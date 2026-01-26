@@ -36,6 +36,6 @@ public class Position {
     }
 
     public Position add(int i, int j) {
-        return new Position(x + i, x + j);
+        return new Position(x + i, y + j);
     }
 }

@@ -2,6 +2,7 @@ package dev.jvictor.chess.core.pieces;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import dev.jvictor.chess.core.Piece;
 import dev.jvictor.chess.core.Position;
@@ -25,7 +26,7 @@ public class Knight extends Piece {
                 position.add(-1, -2), position.add(-2, -1)
             );
         }
-        public boolean isValidRoque(Position destination) {
+        public boolean isValidRoque(Position destination, Map<Position, Piece> pieces) {
             return false;
         }
         public String getSymbol(){
