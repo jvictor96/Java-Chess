@@ -40,7 +40,10 @@ public class Bishop extends Piece {
         public static List<Position> getPossibleDestinationAsBishop(Position position) {
             int upperY = position.y + position.x - 1;
             int lowerY = position.y - position.x + 1;
-            List<Position> rising = IntStream.range(1, 9).mapToObj(x -> new Position(x, lowerY + x)).toList();
+            List<Position> rising = new ArrayList<>();
+            rising.addAll(
+                IntStream.range(1, 9).mapToObj(x -> new Position(x, lowerY + x)).toList()
+            );
             rising.addAll(
                 IntStream.range(1, 9).mapToObj(x -> new Position(x, upperY - x)).toList()
             );

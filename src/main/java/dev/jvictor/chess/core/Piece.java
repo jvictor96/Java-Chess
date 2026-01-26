@@ -44,4 +44,8 @@ public abstract class Piece {
     public Position getPosition() {
         return position;
     }
+
+    public Piece clone() {
+        return Piece.fromType(getSymbol(), color, Position.fromString(position.toString()));
+    }
 }

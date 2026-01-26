@@ -2,8 +2,10 @@ package dev.jvictor.chess.core;
 
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import dev.jvictor.chess.core.Piece.Color;
 
@@ -42,8 +44,18 @@ public class Board {
         positions = pieces.stream().collect(Collectors.toMap(Piece::getPosition, Function.identity()));
     }
 
+    Board(List<Piece> pieces, List<String> movements) {
+        this.pieces = pieces;
+        this.movements = movements;
+        positions = pieces.stream().collect(Collectors.toMap(Piece::getPosition, Function.identity()));
+    }
+
     public Board clone() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        List<Piece> clonedPieces = new ArrayList<>();
+        clonedPieces.addAll(pieces.stream().map(Piece::clone).toList());
+        List<String> clonedMovements = new ArrayList<>();
+        clonedMovements.addAll(movements);
+        return new Board(clonedPieces, clonedMovements);
     }
 
     public Piece getPieceAt(String position) {
@@ -51,11 +63,28 @@ public class Board {
     }
 
     public boolean isColorInCheck(Piece.Color color) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        Piece king = pieces.stream().filter(p -> p.getSymbol().equals("K") && p.color == color).findFirst().orElseThrow();
+        return pieces.stream().filter(p -> p.color != color).map(
+            p -> new Movement(p.position, king.position, positions).isMovementValid()).anyMatch(
+                Boolean::booleanValue
+            );
     }
 
+    private record PieceAndDestinations(Piece piece, List<Position> destinations) {}
+
     public boolean isColorInCheckMate(Piece.Color color) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        Predicate<List<Position>> cloneAndMove = (List<Position> positions) -> {
+            Board clone = this.clone();
+            Movement movement = new Movement(positions.get(0), positions.get(0), clone.positions);
+            return clone.move(movement).legal;
+        };
+        Stream<PieceAndDestinations> tuples = pieces.stream().map(
+            p -> new PieceAndDestinations(p, p.getAllPossibleDestinations()));
+
+        Stream<PieceAndDestinations> valid = tuples.filter(pAndD -> pAndD.destinations.stream().anyMatch(
+                d -> cloneAndMove.test(List.of(pAndD.piece.position, d))));
+                
+        return valid.peek(pAndD -> System.out.println(pAndD.piece + "AAAAA")).toList().size() == 0;
     }
 
     private void updatePositions(Movement movement) {
@@ -68,6 +97,7 @@ public class Board {
         movement.piece.position = movement.to;
         positions.put(movement.to, positions.get(movement.from));
         positions.remove(movement.from);
+        pieces = positions.values().stream().toList();
     }
 
     public Board moveWithoutValidation(Movement movement) {
@@ -84,8 +114,17 @@ public class Board {
         if (!legal) return this;
         boolean rightTurn = movements.size() % 2 == 0 && movement.piece.color == Color.WHITE;
         rightTurn = rightTurn || movements.size() % 2 == 1 && movement.piece.color == Color.BLACK;
-        legal = legal && rightTurn;
-        if (legal) updatePositions(movement);
+        legal = rightTurn;
+        if (!legal) return this;
+        Board board = this.clone();
+        board.updatePositions(board.buildMovement(movement.toString()));
+        legal = !board.isColorInCheck(movement.piece.color);
+        if (!legal) return this;
+        if (
+            board.isColorInCheck(movement.piece.color == Color.WHITE ? Color.BLACK : Color.WHITE) &&
+            board.isColorInCheckMate(movement.piece.color == Color.WHITE ? Color.BLACK : Color.WHITE)
+        ) winner = movement.piece.color == Color.WHITE ? white : black;
+        updatePositions(movement);
         return this;
     }
 

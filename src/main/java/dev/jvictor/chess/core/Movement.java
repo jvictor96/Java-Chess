@@ -9,7 +9,7 @@ public class Movement {
     Map<Position, Piece> positions;
     Piece piece;
 
-    Movement(Position from, Position to, Map<Position, Piece> positions) {
+    public Movement(Position from, Position to, Map<Position, Piece> positions) {
         this.positions = positions;
         this.from = from;
         this.to = to;
@@ -53,5 +53,9 @@ public class Movement {
 
     private boolean isDestinationValid() {
         return to.isValid();
+    }
+
+    public String toString() {
+        return "%s%s".formatted(from, to);
     }
 }

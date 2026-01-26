@@ -18,10 +18,15 @@ public class Knight extends Piece {
             return new ArrayList<>();
         }
         public List<Position> getAllPossibleDestinations() {
-            throw new UnsupportedOperationException("Not implemented yet");
+            return List.of(
+                position.add(1, 2), position.add(2, 1),
+                position.add(-1, 2), position.add(-2, 1),
+                position.add(1, -2), position.add(2, -1),
+                position.add(-1, -2), position.add(-2, -1)
+            );
         }
         public boolean isValidRoque(Position destination) {
-            throw new UnsupportedOperationException("Not implemented yet");
+            return false;
         }
         public String getSymbol(){
             return "N";

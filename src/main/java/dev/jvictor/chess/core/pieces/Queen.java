@@ -13,6 +13,7 @@ public class Queen extends Piece {
     }
 
     private String getMovingAs(Position destination) {
+        if (position.x == destination.x && position.y == destination.y) return null;
         return Map.of(
             position.x == destination.x || position.y == destination.y ? 0 : 1, "R",
             Math.abs(destination.x-position.x) == Math.abs(destination.y-position.y) ? 0 : 2, "B"
@@ -33,7 +34,8 @@ public class Queen extends Piece {
         ).get(true);
     }
     public List<Position> getAllPossibleDestinations() {
-        List<Position> asBishop = Bishop.getPossibleDestinationAsBishop(position);
+        List<Position> asBishop = new ArrayList<>();
+        asBishop.addAll(Bishop.getPossibleDestinationAsBishop(position));
         asBishop.addAll(Rook.rookPossibleDestinations(position));
         return asBishop;
     }

@@ -33,9 +33,9 @@ public class Rook extends Piece {
         }
 
         public static List<Position> rookPossibleDestinations(Position origin) {
-            List<Position> sameColumn = IntStream.range(1,9).mapToObj(y -> new Position(origin.x, y)).filter(p -> p.y != origin.y).toList();
-            List<Position> sameRow = IntStream.range(1,9).mapToObj(y -> new Position(origin.x, y)).filter(p -> p.y != origin.y).toList();
-            sameColumn.addAll(sameRow);
+            List<Position> sameColumn = new ArrayList<>();
+            sameColumn.addAll(IntStream.range(1,9).mapToObj(y -> new Position(origin.x, y)).filter(p -> p.y != origin.y).toList());
+            sameColumn.addAll(IntStream.range(1,9).mapToObj(x -> new Position(x, origin.y)).filter(p -> p.y != origin.y).toList());
             return sameColumn;
         }
 

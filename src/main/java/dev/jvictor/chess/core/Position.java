@@ -22,7 +22,7 @@ public class Position {
 
     @Override
     public String toString() {
-        return "%d%d".formatted(x, y);
+        return "%c%d".formatted((char) 96+x, y);
     }
     
     @Override
