@@ -61,6 +61,7 @@ public class IntegrationTest {
     public void createGameTest() {
         keyboard.putEntry("new game");
         keyboard.putEntry("mike");
+        machine.mainLoop();
         Board board = persistence.getBoard(1).orElse(null);
         Assertions.assertEquals("josé", board.white);
         Assertions.assertEquals("mike", board.black);
