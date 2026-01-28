@@ -21,7 +21,7 @@ public class ResignCommand implements ShellStateHandler {
     public ShellState handle() {
         persistenceAdapter.listGames();
         int id = Integer.parseInt(keyboard.read("which game? ").strip());
-        Board board = persistenceAdapter.getBoard(id);
+        Board board = persistenceAdapter.getBoard(id).orElse(null);
         board.winner = user == board.white ? board.black : board.white;
         persistenceAdapter.saveBoard(id, board);
         return ShellState.READING;

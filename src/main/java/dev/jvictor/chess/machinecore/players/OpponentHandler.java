@@ -26,7 +26,7 @@ public class OpponentHandler implements MovementStateHandler{
     public MovementState handle() {
         return messageCrossing.pop()
             .map(movement -> {
-                Board board = persistenceAdapter.getBoard(id);
+                Board board = persistenceAdapter.getBoard(id).orElse(null);
                 board.move(board.buildMovement(movement));
                 persistenceAdapter.saveBoard(id, board);
                 gameViewer.display(board);

@@ -1,32 +1,37 @@
 package dev.jvictor.chess.io;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import dev.jvictor.chess.bootstrap.ports.PersistenceAdapter;
 import dev.jvictor.chess.core.Board;
  
 public class InMemoryPersistence implements PersistenceAdapter {
 
+    List<Board> boards = new ArrayList<>();
+    int nextId = 0;
+
     @Override
-    public Board getBoard(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getBoard'");
+    public Optional<Board> getBoard(int id) {
+        return boards.stream().filter(b -> b.id == id).findFirst();
     }
 
     @Override
     public void saveBoard(int id, Board board) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'saveBoard'");
+        board.id = id;
+        boards.add(board);
     }
 
     @Override
     public int getNextId() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getNextId'");
+        nextId ++;
+        return nextId;
     }
 
     @Override
-    public void listGames() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'listGames'");
+    public List<Board> listGames() {
+        return boards;
     }
     
 }

@@ -19,6 +19,7 @@ public class Board {
     Map<Position, Piece> positions;
     public String white, black, winner;
     public boolean legal;
+    public int id;
 
     public Board() {
         pieces = new ArrayList<>();

@@ -46,7 +46,7 @@ public class ChangeCommand implements ShellStateHandler {
     public ShellState handle() {
         persistenceAdapter.listGames();
         int id = Integer.parseInt(keyboard.read("which game? ").strip());
-        Board board = persistenceAdapter.getBoard(id);
+        Board board = persistenceAdapter.getBoard(id).orElse(null);
         if (game != null && !game.isDone()) game.cancel(true);
         String opponent = board.white == user ? board.black : board.white;
         MessageCrossing messageCrossing = messageCrossingFactory.getMessageCrossing(user, opponent);
