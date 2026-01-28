@@ -1,5 +1,14 @@
 package dev.jvictor.chess.io;
 
-public class NoViewAdapter {
+import dev.jvictor.chess.bootstrap.ports.GameViewer;
+import dev.jvictor.chess.core.Board;
+
+public class NoViewAdapter implements GameViewer {
+
+    @Override
+    public void display(Board board) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'display'");
+    }
     
 }

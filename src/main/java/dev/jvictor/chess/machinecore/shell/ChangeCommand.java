@@ -11,6 +11,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import dev.jvictor.chess.bootstrap.ports.GameViewer;
 import dev.jvictor.chess.bootstrap.ports.Keyboard;
 import dev.jvictor.chess.bootstrap.ports.PersistenceAdapter;
 import dev.jvictor.chess.core.Board;
@@ -24,15 +25,17 @@ public class ChangeCommand implements ShellStateHandler {
     MessageCrossingFactory messageCrossingFactory;
     PersistenceAdapter persistenceAdapter;
     List<String> movements, opponentMovements;
+    GameViewer gameViewer;
     Keyboard keyboard;
     String user;
     CompletableFuture<?> game;
     ExecutorService gameExecutor = Executors.newSingleThreadExecutor();
 
-    public ChangeCommand(PersistenceAdapter persistenceAdapter, Keyboard keyboard, List<String> movements, String user, MessageCrossingFactory messageCrossingFactory) {
+    public ChangeCommand(PersistenceAdapter persistenceAdapter, Keyboard keyboard, GameViewer gameViewer, List<String> movements, String user, MessageCrossingFactory messageCrossingFactory) {
         this.persistenceAdapter = persistenceAdapter;
         this.keyboard = keyboard;
         this.messageCrossingFactory = messageCrossingFactory;
+        this.gameViewer = gameViewer;
         this.movements = movements;
         this.opponentMovements = new ArrayList<>();
         this.user = user;
@@ -49,8 +52,8 @@ public class ChangeCommand implements ShellStateHandler {
         MessageCrossing messageCrossing = messageCrossingFactory.getMessageCrossing(user, opponent);
         opponentMovements.forEach(messageCrossing::send);
         MovementMachine movementMachine = new MovementMachine(Map.of(
-            MovementState.YOUR_TURN, new YourHandler(movements, messageCrossing, persistenceAdapter, id),
-            MovementState.THEIR_TURN, new OpponentHandler(movements, messageCrossing, persistenceAdapter, id)
+            MovementState.YOUR_TURN, new YourHandler(movements, messageCrossing, persistenceAdapter, gameViewer, id),
+            MovementState.THEIR_TURN, new OpponentHandler(movements, messageCrossing, persistenceAdapter, gameViewer, id)
         ));
         game = CompletableFuture.supplyAsync(() -> movementMachine.mainLoop(), gameExecutor);
         persistenceAdapter.saveBoard(persistenceAdapter.getNextId(), board);
