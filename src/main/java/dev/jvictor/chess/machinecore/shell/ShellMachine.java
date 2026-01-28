@@ -2,6 +2,7 @@ package dev.jvictor.chess.machinecore.shell;
 
 import java.util.Map;
 
+import dev.jvictor.chess.io.InMemoryKeyboard;
 import dev.jvictor.chess.machinecore.ports.ShellStateHandler;
 import dev.jvictor.chess.machinecore.ports.ShellStateHandler.ShellState;
 
@@ -20,7 +21,7 @@ public class ShellMachine {
     }
 
     public void mainLoop() {
-        while (shellMode == ShellMode.FOREVER || ((CommandReader) handlers.get(ShellState.READING)).messages.size() > 0) {
+        while (shellMode == ShellMode.FOREVER || ((InMemoryKeyboard) ((CommandReader) handlers.get(ShellState.READING)).keyboard).entries.size() > 0) {
             state = handlers.get(state).handle();
         }
     }

@@ -7,12 +7,12 @@ import dev.jvictor.chess.bootstrap.ports.Keyboard;;
 
 public class InMemoryKeyboard implements Keyboard {
 
-    private List<String> entries = new ArrayList<>();
+    public List<String> entries = new ArrayList<>();
 
     @Override
     public String read(String prompt) {
         // TODO Auto-generated method stub
-        return entries.size() > 0 ? entries.removeFirst() : null;
+        return entries.size() > 0 ? entries.remove(0) : null;
     }
 
     @Override

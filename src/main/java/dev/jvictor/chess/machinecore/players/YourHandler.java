@@ -27,7 +27,7 @@ public class YourHandler implements MovementStateHandler {
 
     @Override
     public MovementState handle() {
-        return Optional.ofNullable(movements.size() > 0 ? movements.removeFirst() : null)
+        return Optional.ofNullable(movements.size() > 0 ? movements.remove(0) : null)
             .map(movement -> {
                 Board board = persistenceAdapter.getBoard(id).orElse(null);
                 board.move(board.buildMovement(movement));

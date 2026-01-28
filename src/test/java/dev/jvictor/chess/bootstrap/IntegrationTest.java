@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import dev.jvictor.chess.bootstrap.ports.GameViewer;
 import dev.jvictor.chess.bootstrap.ports.Keyboard;
 import dev.jvictor.chess.bootstrap.ports.PersistenceAdapter;
+import dev.jvictor.chess.core.Board;
 import dev.jvictor.chess.io.InMemoryKeyboard;
 import dev.jvictor.chess.io.InMemoryMessageCrossingFactory;
 import dev.jvictor.chess.io.InMemoryPersistence;
@@ -28,14 +29,16 @@ import dev.jvictor.chess.machinecore.shell.ShellMachine.ShellMode;
 
 public class IntegrationTest {
     
-    ShellMachine machine;
+    static Keyboard keyboard;
+    static ShellMachine machine;
+    static PersistenceAdapter persistence;
 
     @BeforeAll
-    public void resetBoard() {
-        Keyboard keyboard = new InMemoryKeyboard();
-        PersistenceAdapter persistence = new InMemoryPersistence();
+    public static void resetBoard() {
+        keyboard = new InMemoryKeyboard();
+        persistence = new InMemoryPersistence();
         GameViewer gameViewer = new NoViewAdapter();
-        String user = "jose";
+        String user = "josé";
         List<String> movements= new ArrayList<>();
         MessageCrossingFactory messageCrossingFactory = new InMemoryMessageCrossingFactory();
         CommandReader commandReader = new CommandReader(keyboard);
@@ -52,5 +55,14 @@ public class IntegrationTest {
             ShellState.RESIGNING, resignCommand,
             ShellState.MOVING, moveCommand
         ), ShellMode.WHILE_THERE_ARE_MESSAGES);
+    }
+
+    @Test
+    public void createGameTest() {
+        keyboard.putEntry("new game");
+        keyboard.putEntry("mike");
+        Board board = persistence.getBoard(1).orElse(null);
+        Assertions.assertEquals("josé", board.white);
+        Assertions.assertEquals("mike", board.black);
     }
 }

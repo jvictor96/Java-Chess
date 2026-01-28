@@ -12,7 +12,7 @@ public class InMemoryMessageCrossing implements MessageCrossing {
 
     @Override
     public Optional<String> pop() {
-        return Optional.of(messages.size() > 0 ? messages.removeFirst() : null);
+        return Optional.of(messages.size() > 0 ? messages.remove(0) : null);
     }
 
     @Override
