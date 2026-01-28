@@ -17,10 +17,10 @@ public class Board {
     List<Piece> pieces;
     List<String> movements;
     Map<Position, Piece> positions;
-    String white, black, winner;
+    public String white, black, winner;
     public boolean legal;
 
-    Board() {
+    public Board() {
         pieces = new ArrayList<>();
         movements = new ArrayList<>();
         IntStream.range(1,9).forEach(i -> pieces.add(Piece.fromType("P", Color.WHITE, new Position(i, 2))));
