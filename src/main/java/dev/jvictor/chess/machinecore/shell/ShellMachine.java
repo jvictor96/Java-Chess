@@ -21,6 +21,7 @@ public class ShellMachine {
     }
 
     public void mainLoop() {
+        state = ShellState.READING;
         while (shellMode == ShellMode.FOREVER || ((InMemoryKeyboard) ((CommandReader) handlers.get(ShellState.READING)).keyboard).entries.size() > 0) {
             state = handlers.get(state).handle();
         }

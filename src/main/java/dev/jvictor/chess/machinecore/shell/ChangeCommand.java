@@ -56,7 +56,6 @@ public class ChangeCommand implements ShellStateHandler {
             MovementState.THEIR_TURN, new OpponentHandler(movements, messageCrossing, persistenceAdapter, gameViewer, id)
         ));
         game = CompletableFuture.supplyAsync(() -> movementMachine.mainLoop(), gameExecutor);
-        persistenceAdapter.saveBoard(persistenceAdapter.getNextId(), board);
         return ShellState.READING;
     }
     

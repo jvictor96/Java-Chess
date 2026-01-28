@@ -19,5 +19,9 @@ public class InMemoryKeyboard implements Keyboard {
     public void putEntry(String entry) {
         entries.add(entry);
     }
+
+    public void clear() {
+        entries = new ArrayList<>();
+    }
     
 }

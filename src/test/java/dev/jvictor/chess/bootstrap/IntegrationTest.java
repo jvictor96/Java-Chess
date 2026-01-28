@@ -6,12 +6,14 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import dev.jvictor.chess.bootstrap.ports.GameViewer;
 import dev.jvictor.chess.bootstrap.ports.Keyboard;
 import dev.jvictor.chess.bootstrap.ports.PersistenceAdapter;
 import dev.jvictor.chess.core.Board;
+import dev.jvictor.chess.core.Piece.Color;
 import dev.jvictor.chess.io.InMemoryKeyboard;
 import dev.jvictor.chess.io.InMemoryMessageCrossingFactory;
 import dev.jvictor.chess.io.InMemoryPersistence;
@@ -32,6 +34,7 @@ public class IntegrationTest {
     static Keyboard keyboard;
     static ShellMachine machine;
     static PersistenceAdapter persistence;
+    static ChangeCommand changeCommand;
 
     @BeforeAll
     public static void resetBoard() {
@@ -43,8 +46,8 @@ public class IntegrationTest {
         MessageCrossingFactory messageCrossingFactory = new InMemoryMessageCrossingFactory();
         CommandReader commandReader = new CommandReader(keyboard);
         ListCommand listCommand = new ListCommand(persistence);
-        ChangeCommand changeCommand = new ChangeCommand(persistence, keyboard, gameViewer, movements, user, messageCrossingFactory);
-        MoveCommand moveCommand = new MoveCommand(keyboard);
+        changeCommand = new ChangeCommand(persistence, keyboard, gameViewer, movements, user, messageCrossingFactory);
+        MoveCommand moveCommand = new MoveCommand(keyboard, movements);
         ResignCommand resignCommand = new ResignCommand(persistence, keyboard, user);
         ChallengeCommand challengeCommand = new ChallengeCommand(persistence, keyboard, user);
         machine = new ShellMachine(Map.of(
@@ -57,6 +60,12 @@ public class IntegrationTest {
         ), ShellMode.WHILE_THERE_ARE_MESSAGES);
     }
 
+    @BeforeEach
+    public void resetPersistence() {
+        persistence.clearAll();
+        ((InMemoryKeyboard) keyboard).clear();
+    }
+
     @Test
     public void createGameTest() {
         keyboard.putEntry("new game");
@@ -65,5 +74,22 @@ public class IntegrationTest {
         Board board = persistence.getBoard(1).orElse(null);
         Assertions.assertEquals("josé", board.white);
         Assertions.assertEquals("mike", board.black);
+    }
+
+    @Test
+    public void movesInTheRightOrderTest() {
+        keyboard.putEntry("new game");
+        keyboard.putEntry("mike");
+        keyboard.putEntry("change game");
+        keyboard.putEntry("1");
+        keyboard.putEntry("move");
+        keyboard.putEntry("e2e4");
+        keyboard.putEntry("move");
+        keyboard.putEntry("e4e5");
+        changeCommand.registerOpponentMovements(List.of("e7e5"));
+        machine.mainLoop();
+        Board board = persistence.getBoard(1).orElse(null);
+        Assertions.assertEquals("P", board.getPieceAt("e4").getSymbol());
+        Assertions.assertEquals(Color.BLACK, board.getPieceAt("e5").color);
     }
 }

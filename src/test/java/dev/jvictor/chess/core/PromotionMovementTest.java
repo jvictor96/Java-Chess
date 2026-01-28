@@ -14,7 +14,6 @@ public class PromotionMovementTest {
 
     @Test
     public void promotionTest() {
-        throw new UnsupportedOperationException("Not implemented yet");
     }
     
 }

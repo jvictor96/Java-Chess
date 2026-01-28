@@ -8,6 +8,7 @@ import dev.jvictor.chess.core.Board;
 public interface PersistenceAdapter {
     public abstract Optional<Board> getBoard(int id);
     public abstract void saveBoard(int id, Board board);
+    public abstract void clearAll();
     public abstract int getNextId();
     public abstract List<Board> listGames();
 }

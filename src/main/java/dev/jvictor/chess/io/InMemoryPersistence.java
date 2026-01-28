@@ -33,5 +33,11 @@ public class InMemoryPersistence implements PersistenceAdapter {
     public List<Board> listGames() {
         return boards;
     }
+
+    @Override
+    public void clearAll() {
+        boards = new ArrayList<>();
+        nextId = 0;
+    }
     
 }
