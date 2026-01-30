@@ -8,11 +8,11 @@ import dev.jvictor.chess.machinecore.ports.MessageCrossing;
 
 public class InMemoryMessageCrossing implements MessageCrossing {
 
-    List<String> messages = new ArrayList<>();
+    public List<String> messages = new ArrayList<>();
 
     @Override
     public Optional<String> pop() {
-        return Optional.of(messages.size() > 0 ? messages.remove(0) : null);
+        return Optional.ofNullable(messages.size() > 0 ? messages.remove(0) : null);
     }
 
     @Override
@@ -21,7 +21,8 @@ public class InMemoryMessageCrossing implements MessageCrossing {
     }
 
     public void registerOpponentMessages(List<String> messages) {
-        this.messages = messages;
+        this.messages = new ArrayList<>();
+        this.messages.addAll(messages);
     }
     
 }

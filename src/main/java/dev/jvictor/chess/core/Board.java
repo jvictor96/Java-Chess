@@ -15,7 +15,7 @@ import java.util.List;
 public class Board {
     
     List<Piece> pieces;
-    List<String> movements;
+    public List<String> movements;
     Map<Position, Piece> positions;
     public String white, black, winner;
     public boolean legal;

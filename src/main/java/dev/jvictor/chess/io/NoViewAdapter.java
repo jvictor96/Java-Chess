@@ -7,8 +7,6 @@ public class NoViewAdapter implements GameViewer {
 
     @Override
     public void display(Board board) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'display'");
     }
     
 }

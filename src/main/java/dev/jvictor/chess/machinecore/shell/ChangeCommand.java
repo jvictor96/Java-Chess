@@ -50,12 +50,14 @@ public class ChangeCommand implements ShellStateHandler {
         if (game != null && !game.isDone()) game.cancel(true);
         String opponent = board.white == user ? board.black : board.white;
         MessageCrossing messageCrossing = messageCrossingFactory.getMessageCrossing(user, opponent);
-        opponentMovements.forEach(messageCrossing::send);
+        boolean userTurn = List.of(board.movements.size() % 2 == 0, board.white == user).stream().allMatch(Boolean::booleanValue);
+        MovementState state = userTurn ? MovementState.YOUR_TURN : MovementState.THEIR_TURN;
+        messageCrossing.registerOpponentMessages(opponentMovements);
         MovementMachine movementMachine = new MovementMachine(Map.of(
             MovementState.YOUR_TURN, new YourHandler(movements, messageCrossing, persistenceAdapter, gameViewer, id),
             MovementState.THEIR_TURN, new OpponentHandler(movements, messageCrossing, persistenceAdapter, gameViewer, id)
         ));
-        game = CompletableFuture.supplyAsync(() -> movementMachine.mainLoop(), gameExecutor);
+        game = CompletableFuture.supplyAsync(() -> movementMachine.mainLoop(state), gameExecutor);
         return ShellState.READING;
     }
     

@@ -77,7 +77,23 @@ public class IntegrationTest {
     }
 
     @Test
-    public void movesInTheRightOrderTest() {
+    public void doesMoveTest() throws InterruptedException {
+        keyboard.putEntry("new game");
+        keyboard.putEntry("mike");
+        keyboard.putEntry("change game");
+        keyboard.putEntry("1");
+        keyboard.putEntry("move");
+        keyboard.putEntry("e2e4");
+        changeCommand.registerOpponentMovements(List.of("e7e5"));
+        machine.mainLoop();
+        machine.waitTheGameEnd();
+        Board board = persistence.getBoard(1).orElse(null);
+        Assertions.assertEquals("P", board.getPieceAt("e4").getSymbol());
+        Assertions.assertEquals(Color.BLACK, board.getPieceAt("e5").color);
+    }
+
+    @Test
+    public void movesInTheRightOrderTest() throws InterruptedException {
         keyboard.putEntry("new game");
         keyboard.putEntry("mike");
         keyboard.putEntry("change game");
@@ -88,6 +104,7 @@ public class IntegrationTest {
         keyboard.putEntry("e4e5");
         changeCommand.registerOpponentMovements(List.of("e7e5"));
         machine.mainLoop();
+        machine.waitTheGameEnd();
         Board board = persistence.getBoard(1).orElse(null);
         Assertions.assertEquals("P", board.getPieceAt("e4").getSymbol());
         Assertions.assertEquals(Color.BLACK, board.getPieceAt("e5").color);

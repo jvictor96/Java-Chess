@@ -20,6 +20,10 @@ public class ShellMachine {
         this.handlers = handlers;
     }
 
+    public Object waitTheGameEnd() throws InterruptedException{
+        return ((ChangeCommand) handlers.get(ShellState.CHANGING)).game.join();
+    }
+
     public void mainLoop() {
         state = ShellState.READING;
         while (shellMode == ShellMode.FOREVER || ((InMemoryKeyboard) ((CommandReader) handlers.get(ShellState.READING)).keyboard).entries.size() > 0) {
