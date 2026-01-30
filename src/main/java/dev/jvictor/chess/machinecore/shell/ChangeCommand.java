@@ -28,7 +28,8 @@ public class ChangeCommand implements ShellStateHandler {
     GameViewer gameViewer;
     Keyboard keyboard;
     String user;
-    CompletableFuture<?> game;
+    public CompletableFuture<?> game;
+    public MessageCrossing messageCrossing;
     ExecutorService gameExecutor = Executors.newSingleThreadExecutor();
 
     public ChangeCommand(PersistenceAdapter persistenceAdapter, Keyboard keyboard, GameViewer gameViewer, List<String> movements, String user, MessageCrossingFactory messageCrossingFactory) {
@@ -49,7 +50,7 @@ public class ChangeCommand implements ShellStateHandler {
         Board board = persistenceAdapter.getBoard(id).orElse(null);
         if (game != null && !game.isDone()) game.cancel(true);
         String opponent = board.white == user ? board.black : board.white;
-        MessageCrossing messageCrossing = messageCrossingFactory.getMessageCrossing(user, opponent);
+        messageCrossing = messageCrossingFactory.getMessageCrossing(user, opponent);
         boolean userTurn = List.of(board.movements.size() % 2 == 0, board.white == user).stream().allMatch(Boolean::booleanValue);
         MovementState state = userTurn ? MovementState.YOUR_TURN : MovementState.THEIR_TURN;
         messageCrossing.registerOpponentMessages(opponentMovements);

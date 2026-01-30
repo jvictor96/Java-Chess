@@ -3,9 +3,9 @@ package dev.jvictor.chess.bootstrap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +15,7 @@ import dev.jvictor.chess.bootstrap.ports.PersistenceAdapter;
 import dev.jvictor.chess.core.Board;
 import dev.jvictor.chess.core.Piece.Color;
 import dev.jvictor.chess.io.InMemoryKeyboard;
+import dev.jvictor.chess.io.InMemoryMessageCrossing;
 import dev.jvictor.chess.io.InMemoryMessageCrossingFactory;
 import dev.jvictor.chess.io.InMemoryPersistence;
 import dev.jvictor.chess.io.NoViewAdapter;
@@ -27,7 +28,6 @@ import dev.jvictor.chess.machinecore.shell.ResignCommand;
 import dev.jvictor.chess.machinecore.shell.ListCommand;
 import dev.jvictor.chess.machinecore.shell.MoveCommand;
 import dev.jvictor.chess.machinecore.shell.ShellMachine;
-import dev.jvictor.chess.machinecore.shell.ShellMachine.ShellMode;
 
 public class IntegrationTest {
     
@@ -36,8 +36,8 @@ public class IntegrationTest {
     static PersistenceAdapter persistence;
     static ChangeCommand changeCommand;
 
-    @BeforeAll
-    public static void resetBoard() {
+    @BeforeEach
+    public void resetPersistence() {
         keyboard = new InMemoryKeyboard();
         persistence = new InMemoryPersistence();
         GameViewer gameViewer = new NoViewAdapter();
@@ -57,20 +57,17 @@ public class IntegrationTest {
             ShellState.CHANGING, changeCommand,
             ShellState.RESIGNING, resignCommand,
             ShellState.MOVING, moveCommand
-        ), ShellMode.WHILE_THERE_ARE_MESSAGES);
-    }
-
-    @BeforeEach
-    public void resetPersistence() {
-        persistence.clearAll();
-        ((InMemoryKeyboard) keyboard).clear();
+        ));
     }
 
     @Test
-    public void createGameTest() {
+    public void createGameTest() throws InterruptedException {
         keyboard.putEntry("new game");
         keyboard.putEntry("mike");
-        machine.mainLoop();
+        changeCommand.registerOpponentMovements(List.of());
+        CompletableFuture<Boolean> cf = CompletableFuture.supplyAsync(() -> machine.mainLoop());
+        while (((InMemoryKeyboard) keyboard).entries.size() > 0) Thread.sleep(40);
+        cf.cancel(true);
         Board board = persistence.getBoard(1).orElse(null);
         Assertions.assertEquals("josé", board.white);
         Assertions.assertEquals("mike", board.black);
@@ -84,9 +81,12 @@ public class IntegrationTest {
         keyboard.putEntry("1");
         keyboard.putEntry("move");
         keyboard.putEntry("e2e4");
+        keyboard.putEntry("move");
+        keyboard.putEntry("e2e4");
         changeCommand.registerOpponentMovements(List.of("e7e5"));
-        machine.mainLoop();
-        machine.waitTheGameEnd();
+        CompletableFuture<Boolean> cf = CompletableFuture.supplyAsync(() -> machine.mainLoop());
+        while (((InMemoryKeyboard) keyboard).entries.size() > 0 || ((InMemoryMessageCrossing) changeCommand.messageCrossing).messages.size() > 0) {Thread.sleep(40);}
+        cf.cancel(true);
         Board board = persistence.getBoard(1).orElse(null);
         Assertions.assertEquals("P", board.getPieceAt("e4").getSymbol());
         Assertions.assertEquals(Color.BLACK, board.getPieceAt("e5").color);
@@ -95,7 +95,7 @@ public class IntegrationTest {
     @Test
     public void movesInTheRightOrderTest() throws InterruptedException {
         keyboard.putEntry("new game");
-        keyboard.putEntry("mike");
+        keyboard.putEntry("anne");
         keyboard.putEntry("change game");
         keyboard.putEntry("1");
         keyboard.putEntry("move");
@@ -103,9 +103,11 @@ public class IntegrationTest {
         keyboard.putEntry("move");
         keyboard.putEntry("e4e5");
         changeCommand.registerOpponentMovements(List.of("e7e5"));
-        machine.mainLoop();
-        machine.waitTheGameEnd();
+        CompletableFuture<Boolean> cf = CompletableFuture.supplyAsync(() -> machine.mainLoop());
+        while (((InMemoryKeyboard) keyboard).entries.size() > 0 || ((InMemoryMessageCrossing) changeCommand.messageCrossing).messages.size() > 0) {Thread.sleep(40);}
+        cf.cancel(true);
         Board board = persistence.getBoard(1).orElse(null);
+        Assertions.assertEquals("anne", board.black);
         Assertions.assertEquals("P", board.getPieceAt("e4").getSymbol());
         Assertions.assertEquals(Color.BLACK, board.getPieceAt("e5").color);
     }

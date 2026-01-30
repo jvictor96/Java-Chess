@@ -1,32 +1,20 @@
 package dev.jvictor.chess.machinecore.shell;
 
 import java.util.Map;
-
-import dev.jvictor.chess.io.InMemoryKeyboard;
 import dev.jvictor.chess.machinecore.ports.ShellStateHandler;
 import dev.jvictor.chess.machinecore.ports.ShellStateHandler.ShellState;
 
 public class ShellMachine {
     Map<ShellState, ShellStateHandler> handlers;
     ShellState state;
-    ShellMode shellMode;
 
-    public enum ShellMode {
-        FOREVER, WHILE_THERE_ARE_MESSAGES
-    }
-
-    public ShellMachine(Map<ShellState, ShellStateHandler> handlers, ShellMode shellMode) {
-        this.shellMode = shellMode;
+    public ShellMachine(Map<ShellState, ShellStateHandler> handlers) {
         this.handlers = handlers;
     }
 
-    public Object waitTheGameEnd() throws InterruptedException{
-        return ((ChangeCommand) handlers.get(ShellState.CHANGING)).game.join();
-    }
-
-    public void mainLoop() {
+    public boolean mainLoop() {
         state = ShellState.READING;
-        while (shellMode == ShellMode.FOREVER || ((InMemoryKeyboard) ((CommandReader) handlers.get(ShellState.READING)).keyboard).entries.size() > 0) {
+        while (true) {
             state = handlers.get(state).handle();
         }
     }

@@ -11,7 +11,6 @@ public class InMemoryKeyboard implements Keyboard {
 
     @Override
     public String read(String prompt) {
-        // TODO Auto-generated method stub
         return entries.size() > 0 ? entries.remove(0) : null;
     }
 
