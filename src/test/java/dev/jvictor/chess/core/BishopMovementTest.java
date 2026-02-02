@@ -2,6 +2,8 @@ package dev.jvictor.chess.core;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class BishopMovementTest {
     
@@ -16,25 +18,12 @@ public class BishopMovementTest {
         board = board.moveWithoutValidation(board.buildMovement("a8a7"));
     }
 
-    @Test
-    public void validForwardLeftBishopMoveTest() {
-        board.move(board.buildMovement("e4d5"));
+    @ParameterizedTest
+    @ValueSource(strings = {"e4d5", "e4d3", "e4f3", "e4f5"})
+    public void validBishopMoveTest(String movement) {
+        board.move(board.buildMovement(movement));
         org.junit.jupiter.api.Assertions.assertTrue(board.legal);
-        org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("d5").getSymbol(), "B");
-    }
-
-    @Test
-    public void validBackwardLeftBishopMoveTest() {
-        board.move(board.buildMovement("e4d3"));
-        org.junit.jupiter.api.Assertions.assertTrue(board.legal);
-        org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("d3").getSymbol(), "B");
-    }
-
-    @Test
-    public void validBackwardRightBishopMoveTest() {
-        board.move(board.buildMovement("e4f3"));
-        org.junit.jupiter.api.Assertions.assertTrue(board.legal);
-        org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt("f3").getSymbol(), "B");
+        org.junit.jupiter.api.Assertions.assertEquals(board.getPieceAt(movement.substring(2,4)).getSymbol(), "B");
     }
 
     @Test
