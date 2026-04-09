@@ -1,6 +1,7 @@
 package dev.jvictor.chess.core;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -34,13 +35,14 @@ public class Movement {
             ).get(to);
             return true;
         }
-        return Stream.of(
+        List<Boolean> validation = Stream.of(
             isPieceWiseValid(),
             isPathClear(),
             isAnActualMovement(),
             isDestinationFree(),
             isDestinationValid()
-        ).allMatch(Boolean::booleanValue);
+        ).toList();
+        return validation.stream().allMatch(Boolean::booleanValue);
     }
 
     private boolean isPieceWiseValid() {
@@ -48,7 +50,8 @@ public class Movement {
     }
 
     private boolean isPathClear() {
-        return piece.getMiddlePlaces(to).stream().noneMatch(positions::containsKey);
+        List<Position> middlePlaces = piece.getMiddlePlaces(to);
+        return middlePlaces.stream().noneMatch(positions::containsKey);
     }
 
     private boolean isDestinationFree() {

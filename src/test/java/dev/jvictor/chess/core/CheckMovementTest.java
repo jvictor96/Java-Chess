@@ -12,7 +12,6 @@ public class CheckMovementTest {
     public void resetBoard() {
         pastor = new Board();
         pastor.moveWithoutValidation(pastor.buildMovement("e2e4"));
-        pastor.moveWithoutValidation(pastor.buildMovement("f1c4"));
         pastor.moveWithoutValidation(pastor.buildMovement("d1f3"));
         pastor.white = "jose";
         pastor.black = "mike";
@@ -66,9 +65,21 @@ public class CheckMovementTest {
 
     @Test
     public void checkMateTest() {
+        pastor.move(pastor.buildMovement("f1c4"));
+        Assertions.assertTrue(pastor.legal);
+        pastor.move(pastor.buildMovement("a7a6"));
+        Assertions.assertTrue(pastor.legal);
         pastor.move(pastor.buildMovement("f3f7"));
         Assertions.assertTrue(pastor.legal);
         Assertions.assertEquals("jose", pastor.white);
         Assertions.assertEquals("jose", pastor.winner);
+    }
+
+    @Test
+    public void noCheckMateTest() {
+        pastor.move(pastor.buildMovement("f3f7"));
+        Assertions.assertTrue(pastor.legal);
+        Assertions.assertEquals("jose", pastor.white);
+        Assertions.assertEquals(null, pastor.winner);
     }
 }

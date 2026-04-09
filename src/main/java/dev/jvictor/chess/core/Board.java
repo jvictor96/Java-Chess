@@ -1,5 +1,7 @@
 package dev.jvictor.chess.core;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -8,9 +10,6 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import dev.jvictor.chess.core.Piece.Color;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Board {
     
@@ -74,18 +73,18 @@ public class Board {
     private record PieceAndDestinations(Piece piece, List<Position> destinations) {}
 
     public boolean isColorInCheckMate(Piece.Color color) {
-        Predicate<List<Position>> cloneAndMove = (List<Position> positions) -> {
+        Predicate<List<Position>> cloneAndMove = (List<Position> pPositions) -> {
             Board clone = this.clone();
-            Movement movement = new Movement(positions.get(0), positions.get(0), clone.positions);
+            Movement movement = new Movement(pPositions.get(0), pPositions.get(1), clone.positions);
             return clone.move(movement).legal;
         };
-        Stream<PieceAndDestinations> tuples = pieces.stream().map(
+        Stream<PieceAndDestinations> tuples = pieces.stream().filter(p -> p.color == color).map(
             p -> new PieceAndDestinations(p, p.getAllPossibleDestinations()));
 
-        Stream<PieceAndDestinations> valid = tuples.filter(pAndD -> pAndD.destinations.stream().anyMatch(
-                d -> cloneAndMove.test(List.of(pAndD.piece.position, d))));
+        List<PieceAndDestinations> valid = tuples.filter(pAndD -> pAndD.destinations.stream().anyMatch(
+                d -> cloneAndMove.test(List.of(pAndD.piece.position, d)))).toList();
                 
-        return valid.peek(pAndD -> System.out.println(pAndD.piece)).toList().size() == 0;
+        return valid.isEmpty();
     }
 
     private void updatePositions(Movement movement) {
@@ -125,7 +124,7 @@ public class Board {
         if (
             board.isColorInCheck(movement.piece.color == Color.WHITE ? Color.BLACK : Color.WHITE) &&
             board.isColorInCheckMate(movement.piece.color == Color.WHITE ? Color.BLACK : Color.WHITE)
-        ) winner = movement.piece.color == Color.WHITE ? white : black;
+        ) {winner = movement.piece.color == Color.WHITE ? white : black;}
         updatePositions(movement);
         return this;
     }
